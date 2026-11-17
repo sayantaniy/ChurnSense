@@ -8,30 +8,33 @@ ChurnSense is a machine learning project designed to help businesses identify cu
 
 - **Churn Prediction:** Identify customers at risk of leaving using machine learning.
 - **LTV Estimation:** Estimate the potential financial value of customers.
-- **Customer Analytics:** Visualize customer behavior, churn patterns, and revenue insights.
-- **Interactive Dashboard:** Explore predictions and customer data through a web-based dashboard.
+- **Customer Analytics:** Review backend-calculated churn and LTV metrics and search customer records.
+- **Simple Frontend:** View live backend metrics, customer records, and churn predictions. The frontend does not substitute sample data when the API is unavailable.
 
 ## Tech Stack
 
 - **Frontend:** Next.js, TypeScript, Tailwind CSS, shadcn/ui
 - **Backend:** Python, FastAPI
 - **Machine Learning:** Scikit-learn, Pandas, NumPy
-- **Database:** PostgreSQL
+- **Data:** CSV customer dataset
 - **Visualization:** Recharts
 
-## Project Structure
+## Run locally
 
-```text
-ChurnSense/
-├── frontend/
-├── backend/
-├── dataset/
-└── README.md
+Start the backend from `backend/`:
+
+```bash
+uvicorn main:app --reload
 ```
 
-## Project Status
+Start the frontend from `frontend/`:
 
-🚧 Currently under development.
+```bash
+npm install
+npm run dev
+```
+
+The frontend defaults to `http://127.0.0.1:8000` for the API. Set `NEXT_PUBLIC_API_URL` if the backend is hosted elsewhere.
 
 ## Objective
 

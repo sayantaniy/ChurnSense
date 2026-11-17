@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ChurnSense — ML Churn Prediction & LTV Dashboard",
-  description: "Customer Churn Prediction and Lifetime Value (LTV) Estimation System",
+  title: "ChurnSense — Customer Churn",
+  description: "Backend-powered customer churn and lifetime value insights.",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-[#F8FAFC] text-[#1E293B] font-['Work_Sans',sans-serif] antialiased">
+      <body className="min-h-full antialiased">
         {children}
       </body>
     </html>

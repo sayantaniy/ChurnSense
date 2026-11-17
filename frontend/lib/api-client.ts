@@ -1,125 +1,63 @@
-/**
- * ChurnSense API Client
- *
- * Designed to connect seamlessly with the upcoming Python FastAPI backend.
- * Currently serves realistic mock data with an API-ready contract.
- *
- * When the backend is ready, set NEXT_PUBLIC_API_URL in .env (e.g. http://localhost:8000)
- */
-
-import {
+import type {
   Customer,
+  CustomerPredictionInput,
   MetricSummary,
-  ChurnDistributionItem,
-  RiskDistributionItem,
-  LtvTrendPoint,
-  ContractChurnComparison,
-  LtvCohortSegment,
+  PredictionResult,
+  RiskLevel,
 } from "./types";
-import {
-  MOCK_SUMMARY,
-  MOCK_CUSTOMERS,
-  MOCK_CHURN_DISTRIBUTION,
-  MOCK_RISK_DISTRIBUTION,
-  MOCK_LTV_TRENDS,
-  MOCK_CONTRACT_CHURN,
-  MOCK_LTV_COHORTS,
-} from "./mock-data";
+
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(`${baseUrl}${path}`, {
+    ...init,
+    cache: "no-store",
+    headers: {
+      ...(init?.body ? { "Content-Type": "application/json" } : {}),
+      ...init?.headers,
+    },
+  });
+
+  if (!response.ok) {
+    let detail = `Request failed (${response.status})`;
+    try {
+      const body = await response.json();
+      if (typeof body.detail === "string") detail = body.detail;
+    } catch {
+      // Keep the HTTP status message when the server does not return JSON.
+    }
+    throw new Error(detail);
+  }
+
+  return response.json() as Promise<T>;
+}
 
 export const apiClient = {
-  /**
-   * Base API endpoint (defaults to local FastAPI backend)
-   */
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000",
+  getHealth: () => request<{ status: string; model_loaded: boolean }>("/api/v1/health"),
 
-  /**
-   * Fetch top-level dashboard metrics
-   */
-  async getMetricsSummary(): Promise<MetricSummary> {
-    // When live FastAPI backend is running:
-    // return fetch(`${this.baseUrl}/api/v1/metrics/summary`).then(r => r.json());
-    return Promise.resolve(MOCK_SUMMARY);
-  },
+  getMetricsSummary: () => request<MetricSummary>("/api/v1/metrics/summary"),
 
-  /**
-   * Fetch customer churn distribution
-   */
-  async getChurnDistribution(): Promise<ChurnDistributionItem[]> {
-    return Promise.resolve(MOCK_CHURN_DISTRIBUTION);
-  },
-
-  /**
-   * Fetch customer risk breakdown (low/medium/high)
-   */
-  async getRiskDistribution(): Promise<RiskDistributionItem[]> {
-    return Promise.resolve(MOCK_RISK_DISTRIBUTION);
-  },
-
-  /**
-   * Fetch LTV trend trajectory
-   */
-  async getLtvTrends(): Promise<LtvTrendPoint[]> {
-    return Promise.resolve(MOCK_LTV_TRENDS);
-  },
-
-  /**
-   * Fetch contract churn comparison
-   */
-  async getContractChurn(): Promise<ContractChurnComparison[]> {
-    return Promise.resolve(MOCK_CONTRACT_CHURN);
-  },
-
-  /**
-   * Fetch LTV cohort segments
-   */
-  async getLtvCohorts(): Promise<LtvCohortSegment[]> {
-    return Promise.resolve(MOCK_LTV_COHORTS);
-  },
-
-  /**
-   * Fetch customer list with optional filtering
-   */
-  async getCustomers(params?: {
+  getCustomers: (params: {
     search?: string;
-    riskLevel?: string;
+    riskLevel?: RiskLevel;
     contract?: string;
-    sortBy?: "churnProbability" | "estimatedLtv" | "monthlyCharges" | "tenureMonths";
-    sortDirection?: "asc" | "desc";
-  }): Promise<Customer[]> {
-    let result = [...MOCK_CUSTOMERS];
-
-    if (params?.search) {
-      const q = params.search.toLowerCase().trim();
-      result = result.filter(
-        (c) =>
-          c.name.toLowerCase().includes(q) ||
-          c.company.toLowerCase().includes(q) ||
-          c.id.toLowerCase().includes(q) ||
-          c.email.toLowerCase().includes(q)
-      );
-    }
-
-    if (params?.riskLevel && params.riskLevel !== "All") {
-      result = result.filter((c) => c.riskLevel === params.riskLevel);
-    }
-
-    if (params?.contract && params.contract !== "All") {
-      result = result.filter((c) => c.contract === params.contract);
-    }
-
-    if (params?.sortBy) {
-      const field = params.sortBy;
-      const dir = params.sortDirection === "asc" ? 1 : -1;
-      result.sort((a, b) => (a[field] > b[field] ? dir : -dir));
-    }
-
-    return Promise.resolve(result);
+    limit?: number;
+    offset?: number;
+  } = {}) => {
+    const query = new URLSearchParams();
+    if (params.search) query.set("search", params.search);
+    if (params.riskLevel) query.set("riskLevel", params.riskLevel);
+    if (params.contract) query.set("contract", params.contract);
+    query.set("sortBy", "churnProbability");
+    query.set("sortDirection", "desc");
+    query.set("limit", String(params.limit ?? 5));
+    query.set("offset", String(params.offset ?? 0));
+    return request<Customer[]>(`/api/v1/customers?${query.toString()}`);
   },
 
-  /**
-   * Fetch individual customer by ID
-   */
-  async getCustomerById(id: string): Promise<Customer | undefined> {
-    return Promise.resolve(MOCK_CUSTOMERS.find((c) => c.id === id));
-  },
+  predictCustomer: (input: CustomerPredictionInput) =>
+    request<PredictionResult>("/api/v1/predict/churn", {
+      method: "POST",
+      body: JSON.stringify(input),
+    }),
 };
