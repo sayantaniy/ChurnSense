@@ -6,47 +6,14 @@ import type {
   RiskLevel,
 } from "./types";
 
-const configuredBaseUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
-const requestTimeoutMs = 10_000;
-
-function getBaseUrl(): string {
-  const baseUrl = configuredBaseUrl || (
-    process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000" : ""
-  );
-  if (!baseUrl) {
-    throw new Error(
-      "Backend URL is not configured. Set NEXT_PUBLIC_API_URL to the public backend URL in your deployment settings, then redeploy."
-    );
-  }
-
-  if (typeof window !== "undefined") {
-    const url = new URL(baseUrl, window.location.origin);
-    const loopbackHosts = new Set(["localhost", "127.0.0.1", "::1"]);
-    if (
-      loopbackHosts.has(url.hostname) &&
-      !loopbackHosts.has(window.location.hostname)
-    ) {
-      throw new Error(
-        "The deployed frontend is pointed at localhost, which is only reachable on your own device. Set NEXT_PUBLIC_API_URL to the public backend URL in your deployment settings, then redeploy."
-      );
-    }
-    if (window.location.protocol === "https:" && url.protocol !== "https:" && url.origin !== window.location.origin) {
-      throw new Error(
-        "The deployed frontend requires an HTTPS backend URL. Set NEXT_PUBLIC_API_URL to the public HTTPS backend URL, then redeploy."
-      );
-    }
-  }
-
-  return baseUrl.replace(/\/+$/, "");
-}
+const requestTimeoutMs = 95_000;
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const baseUrl = getBaseUrl();
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), requestTimeoutMs);
   let response: Response;
   try {
-    response = await fetch(`${baseUrl}${path}`, {
+    response = await fetch(path, {
       ...init,
       signal: controller.signal,
       cache: "no-store",
@@ -57,10 +24,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     });
   } catch (error) {
     if (controller.signal.aborted) {
-      throw new Error("The backend did not respond within 10 seconds. Check that the service is running and publicly reachable.");
+      throw new Error("The frontend server did not respond within 95 seconds.");
     }
     if (error instanceof TypeError) {
-      throw new Error("Could not reach the backend. Check the backend URL, CORS settings, and service availability.");
+      throw new Error("Could not reach the frontend server. Check that the service is available.");
     }
     throw error;
   } finally {

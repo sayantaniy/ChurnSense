@@ -284,6 +284,12 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+configured_frontend_origins = [
+    origin.strip()
+    for origin in os.getenv("CHURNSENSE_ALLOWED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
 # Enable CORS for Next.js frontend (local dev and production)
 app.add_middleware(
     CORSMiddleware,
@@ -295,6 +301,7 @@ app.add_middleware(
         "http://localhost:8000",
         "http://127.0.0.1:8000",
         "https://churnsense1.vercel.app",
+        *configured_frontend_origins,
     ],
     allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_credentials=True,
