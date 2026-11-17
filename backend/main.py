@@ -1,4 +1,5 @@
 import os
+import pickle
 import time
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -16,6 +17,7 @@ from train_model import train_and_save_model
 
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "models" / "churn_model.pkl"
+LOCAL_MODEL_PATH = BASE_DIR / "models" / "churn_model.local.pkl"
 DATA_PATH = BASE_DIR / "data" / "customer_churn.csv"
 CLEAN_DATA_PATH = BASE_DIR / "data" / "cleaned_churn.csv"
 
@@ -26,13 +28,31 @@ metrics_cache: Dict[str, Any] = {}
 
 
 def load_or_train_model():
-    """Ensure ML model is loaded into memory, training it if not present."""
+    """Load the saved model, retraining from the bundled data if it is missing or incompatible."""
     global model
-    if not MODEL_PATH.exists():
-        print(f"Model not found at {MODEL_PATH}. Initiating automatic training...")
-        model, _ = train_and_save_model(CLEAN_DATA_PATH, MODEL_PATH)
-    else:
-        model = joblib.load(MODEL_PATH)
+
+    for model_path in (LOCAL_MODEL_PATH, MODEL_PATH):
+        if not model_path.exists():
+            continue
+        try:
+            model = joblib.load(model_path)
+            return model
+        except (
+            AttributeError,
+            EOFError,
+            ImportError,
+            NotImplementedError,
+            pickle.UnpicklingError,
+            TypeError,
+            ValueError,
+        ) as error:
+            print(
+                f"Saved model at {model_path} is incompatible with the installed "
+                f"Python packages ({error})."
+            )
+
+    print(f"Training a compatible model from the bundled dataset at {LOCAL_MODEL_PATH}...")
+    model, _ = train_and_save_model(CLEAN_DATA_PATH, LOCAL_MODEL_PATH)
     return model
 
 

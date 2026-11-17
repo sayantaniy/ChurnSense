@@ -76,6 +76,7 @@ export default function Home() {
   const [summary, setSummary] = useState<MetricSummary | null>(null);
   const [highRiskCustomers, setHighRiskCustomers] = useState<Customer[]>([]);
   const [health, setHealth] = useState<{ status: string; model_loaded: boolean } | null>(null);
+  const [connectionError, setConnectionError] = useState<string | null>(null);
   const [overviewLoading, setOverviewLoading] = useState(true);
   const [overviewError, setOverviewError] = useState<string | null>(null);
 
@@ -106,8 +107,18 @@ export default function Home() {
     ]).then(([healthResult, summaryResult, customersResult]) => {
       if (!active) return;
       const failures: string[] = [];
-      if (healthResult.status === "fulfilled") setHealth(healthResult.value);
-      else failures.push(healthResult.reason instanceof Error ? healthResult.reason.message : "Health check failed");
+      if (healthResult.status === "fulfilled") {
+        setHealth(healthResult.value);
+        setConnectionError(
+          healthResult.value.status === "healthy" && healthResult.value.model_loaded
+            ? null
+            : "Backend responded but the model is not ready."
+        );
+      } else {
+        const message = healthResult.reason instanceof Error ? healthResult.reason.message : "Health check failed";
+        failures.push(message);
+        setConnectionError(message);
+      }
       if (summaryResult.status === "fulfilled") setSummary(summaryResult.value);
       else failures.push(summaryResult.reason instanceof Error ? summaryResult.reason.message : "Metrics request failed");
       if (customersResult.status === "fulfilled") setHighRiskCustomers(customersResult.value);
@@ -190,7 +201,11 @@ export default function Home() {
           </div>
           <div className="connection-pill">
             <span className={`connection-indicator ${health?.status === "healthy" && health.model_loaded ? "is-connected" : ""}`} />
-              {health ? (health.status === "healthy" && health.model_loaded ? "Backend connected" : "Backend not ready") : "Checking backend"}
+            {health?.status === "healthy" && health.model_loaded
+              ? "Backend connected"
+              : connectionError
+                ? "Connection issue"
+                : "Checking backend"}
           </div>
         </div>
       </header>

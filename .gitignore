@@ -6,6 +6,7 @@ venv/
 .venv/
 env/
 .env
+backend/models/churn_model.local.pkl
 
 # Next.js
 frontend/.next/
