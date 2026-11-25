@@ -196,12 +196,12 @@ export default function Home() {
             <div className="brand-mark" aria-hidden="true">
               <svg viewBox="0 0 48 48" fill="none">
                 <path d="M12 32.5V27M19.5 32.5V21M27 32.5V24" stroke="url(#brand-bars)" strokeWidth="3.5" strokeLinecap="round" />
-                <path d="M12 19.5L19.5 14.5L26.5 18L36 10.5" stroke="#FFF4D8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="36" cy="10.5" r="3" fill="#F6BD55" stroke="#FFF4D8" strokeWidth="1.5" />
+                <path d="M12 19.5L19.5 14.5L26.5 18L36 10.5" stroke="#F4EDE0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="36" cy="10.5" r="3" fill="#FF6B5B" stroke="#F4EDE0" strokeWidth="1.5" />
                 <defs>
                   <linearGradient id="brand-bars" x1="12" y1="21" x2="27" y2="33" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#FFE5A4" />
-                    <stop offset="1" stopColor="#E99832" />
+                    <stop stopColor="#F4EDE0" />
+                    <stop offset="1" stopColor="#FF6B5B" />
                   </linearGradient>
                 </defs>
               </svg>

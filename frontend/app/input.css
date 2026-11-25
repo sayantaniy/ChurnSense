@@ -816,15 +816,50 @@
 }
 
 @media (max-width: 639px) {
-  .connection-pill { align-self: flex-start; margin-left: 63px; }
+  .app-header-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: auto;
+    padding-block: 13px;
+  }
+  .brand-lockup {
+    min-width: 0;
+    flex: 1 1 auto;
+    gap: 9px;
+  }
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+  }
+  .brand-mark svg { width: 24px; height: 24px; }
+  .brand-eyebrow { font-size: 6px; letter-spacing: 0.16em; }
+  .brand-title { font-size: 16px; white-space: nowrap; }
+  .brand-subtitle { display: none; }
+  .connection-pill {
+    flex: 0 0 auto;
+    align-self: center;
+    gap: 7px;
+    margin: 0;
+    border-radius: 11px;
+    padding: 8px;
+  }
+  .connection-copy { gap: 0; }
+  .connection-kicker,
+  .connection-chevron { display: none; }
+  .connection-text { font-size: 9px; white-space: nowrap; }
+  .app-header::after {
+    top: -178px;
+    right: 4%;
+    width: 290px;
+    height: 290px;
+    box-shadow: 0 0 0 24px rgba(255, 107, 91, 0.035), 0 0 0 60px rgba(255, 107, 91, 0.02), inset 0 0 54px rgba(255, 107, 91, 0.045);
+  }
 }
 
 @media (max-width: 520px) {
-  .app-header-inner { min-height: auto; }
-  .brand-mark { width: 43px; height: 43px; border-radius: 14px; }
-  .brand-mark svg { width: 28px; height: 28px; }
-  .brand-title { font-size: 18px; }
-  .connection-pill { margin-left: 58px; }
   .main-content { padding-top: 24px; padding-bottom: 48px; }
   .main-nav { width: 100%; }
   .nav-tab { flex: 1 0 auto; padding: 9px 10px; font-size: 11px; }
@@ -844,6 +879,10 @@
   .form-panel, .result-panel { padding: 17px; }
 }
 
+@media (max-width: 359px) {
+  .brand-eyebrow { display: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
@@ -861,4 +900,332 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+@layer theme {
+  :root {
+    --color-slate-500: #696969;
+    --color-slate-600: #454545;
+    --color-slate-900: #14123d;
+  }
+}
+
+:root {
+  --ink: #14123d;
+  --muted: #555;
+  --line: rgba(20, 18, 61, 0.14);
+  --violet: #ff6b5b;
+  --mint: #ff6b5b;
+  --canvas: #f4ede0;
+  --panel: rgba(244, 237, 224, 0.78);
+  --shadow-raised: 8px 10px 24px rgba(20, 18, 61, 0.12), 0 1px 0 rgba(255, 255, 255, 0.72);
+  --shadow-inset: inset 2px 2px 6px rgba(20, 18, 61, 0.08), inset -2px -2px 6px rgba(255, 255, 255, 0.72);
+}
+
+* {
+  border-color: rgba(20, 18, 61, 0.14);
+}
+
+html,
+body {
+  background: #f4ede0;
+  color: #14123d;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline-color: rgba(255, 107, 91, 0.68);
+}
+
+.app-shell {
+  background-color: #f4ede0;
+  background-image:
+    radial-gradient(ellipse at 92% 9%, rgba(255, 107, 91, 0.26), transparent 31rem),
+    linear-gradient(rgba(20, 18, 61, 0.065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 18, 61, 0.065) 1px, transparent 1px),
+    linear-gradient(128deg, #f4ede0 0%, #f4ede0 48%, #14123d 100%);
+  background-size: auto, 48px 48px, 48px 48px, auto;
+  background-position: center, center top, center top, center;
+}
+
+.app-header {
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 86% 130%, rgba(255, 107, 91, 0.26), transparent 29rem),
+    linear-gradient(112deg, #14123d 0%, #14123d 100%);
+  box-shadow: 0 18px 48px rgba(20, 18, 61, 0.22), inset 0 -1px rgba(255, 255, 255, 0.12);
+}
+
+.app-header::before {
+  background: linear-gradient(90deg, transparent 4%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 107, 91, 0.72) 72%, transparent);
+}
+
+.app-header::after {
+  border-color: rgba(255, 107, 91, 0.2);
+  box-shadow: 0 0 0 34px rgba(255, 107, 91, 0.035), 0 0 0 88px rgba(255, 107, 91, 0.02), inset 0 0 70px rgba(255, 107, 91, 0.045);
+}
+
+.brand-mark {
+  border-color: rgba(255, 255, 255, 0.26);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.025)), #14123d;
+  box-shadow: 0 9px 22px rgba(0, 0, 0, 0.24), inset 0 1px rgba(255, 255, 255, 0.22), inset 0 -1px rgba(255, 107, 91, 0.2);
+}
+
+.brand-mark svg {
+  filter: drop-shadow(0 2px 5px rgba(255, 107, 91, 0.24));
+}
+
+.brand-eyebrow,
+.connection-kicker {
+  color: #ff6b5b;
+}
+
+.brand-title {
+  color: #fff;
+}
+
+.brand-subtitle {
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.connection-pill {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.035));
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16), inset 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.connection-text {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.connection-chevron {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.connection-indicator {
+  background: #ff6b5b;
+  box-shadow: 0 0 0 4px rgba(255, 107, 91, 0.14), 0 0 12px rgba(255, 107, 91, 0.3);
+}
+
+.connection-indicator.is-connected {
+  background: #63d8a4;
+  box-shadow: 0 0 0 4px rgba(99, 216, 164, 0.16), 0 0 12px rgba(99, 216, 164, 0.62);
+}
+
+.main-nav {
+  border-color: rgba(255, 255, 255, 0.72);
+  background: rgba(244, 237, 224, 0.68);
+  box-shadow: 0 7px 20px rgba(20, 18, 61, 0.08), inset 0 1px rgba(255, 255, 255, 0.84);
+}
+
+.nav-tab {
+  color: #555;
+}
+
+.nav-tab:hover {
+  color: #14123d;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.nav-tab.is-active {
+  color: #fff;
+  background: #ff6b5b;
+  box-shadow: 0 5px 13px rgba(20, 18, 61, 0.17), inset 0 1px rgba(255, 255, 255, 0.26);
+  text-shadow: none;
+}
+
+.nav-tab:focus-visible {
+  outline-color: rgba(255, 107, 91, 0.68);
+}
+
+.page-eyebrow,
+.panel-eyebrow {
+  color: #ff6b5b;
+}
+
+.page-eyebrow span {
+  background: #ff6b5b;
+  box-shadow: 0 0 0 4px rgba(255, 107, 91, 0.16);
+}
+
+.page-heading h2,
+.snapshot-badge strong,
+.metric-value,
+.panel-heading h3,
+.form-intro strong,
+.result-metric dd {
+  color: #14123d;
+}
+
+.page-heading p,
+.metric-label,
+.panel-heading p,
+.field-label,
+.result-metric dt {
+  color: #555;
+}
+
+.snapshot-badge,
+.metric-card,
+.panel,
+.form-panel,
+.result-panel {
+  border-color: rgba(255, 255, 255, 0.78);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(244, 237, 224, 0.78));
+  box-shadow: 8px 10px 26px rgba(20, 18, 61, 0.12), 0 1px 0 rgba(255, 255, 255, 0.72), inset 0 1px rgba(255, 255, 255, 0.74);
+}
+
+.snapshot-badge small,
+.metric-context,
+.panel-heading p,
+.form-intro small {
+  color: #696969;
+}
+
+.snapshot-orbit {
+  border-color: rgba(20, 18, 61, 0.14);
+  background: linear-gradient(145deg, #fff, #f4ede0);
+  box-shadow: inset 1px 1px 3px rgba(255, 255, 255, 0.92), 2px 3px 7px rgba(20, 18, 61, 0.1);
+}
+
+.snapshot-orbit::before {
+  border-color: rgba(20, 18, 61, 0.5);
+}
+
+.snapshot-orbit::after {
+  background: #ff6b5b;
+  box-shadow: 0 0 7px rgba(255, 107, 91, 0.48);
+}
+
+.metric-card::before {
+  background: #ff6b5b;
+}
+
+.metric-card::after {
+  border-color: rgba(20, 18, 61, 0.12);
+}
+
+.metric-card:hover {
+  border-color: rgba(255, 255, 255, 0.98);
+  box-shadow: 10px 13px 27px rgba(20, 18, 61, 0.15), 0 1px 0 rgba(255, 255, 255, 0.88), inset 0 1px rgba(255, 255, 255, 0.94);
+}
+
+.metric-card-2::before {
+  background: linear-gradient(90deg, #14123d, #777);
+}
+
+.metric-card-3::before {
+  background: #ff6b5b;
+}
+
+.metric-card-4::before {
+  background: linear-gradient(90deg, #555, #aaa);
+}
+
+.metric-index,
+.panel-mark {
+  border-color: rgba(20, 18, 61, 0.12);
+  color: #14123d;
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 3px 4px 10px rgba(20, 18, 61, 0.08), inset 0 1px #fff;
+}
+
+.skeleton-line {
+  background: linear-gradient(100deg, rgba(20, 18, 61, 0.08) 25%, rgba(255, 255, 255, 0.78) 50%, rgba(20, 18, 61, 0.08) 75%);
+}
+
+.panel-heading,
+.form-intro {
+  border-color: rgba(20, 18, 61, 0.12);
+}
+
+.filter-panel,
+.field-control,
+.result-metric,
+.pagination-button {
+  border-color: rgba(255, 255, 255, 0.78);
+  color: #14123d;
+  background: rgba(244, 237, 224, 0.84);
+  box-shadow: inset 2px 2px 6px rgba(20, 18, 61, 0.08), inset -2px -2px 6px rgba(255, 255, 255, 0.68);
+}
+
+.field-control::placeholder {
+  color: #777;
+}
+
+.field-control:focus {
+  border-color: rgba(255, 107, 91, 0.72);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: inset 1px 1px 3px rgba(20, 18, 61, 0.06), 0 0 0 4px rgba(255, 107, 91, 0.14);
+}
+
+.data-table thead {
+  color: #555;
+  background: rgba(20, 18, 61, 0.045);
+}
+
+.data-table td {
+  border-color: rgba(20, 18, 61, 0.1);
+}
+
+.data-table tbody tr:hover {
+  background: rgba(20, 18, 61, 0.045);
+}
+
+.customer-id {
+  color: #14123d;
+}
+
+.risk-low,
+.risk-medium {
+  border-color: rgba(20, 18, 61, 0.12);
+  color: #454545;
+  background: rgba(20, 18, 61, 0.055);
+}
+
+.risk-high {
+  border-color: rgba(255, 107, 91, 0.24);
+  color: #14123d;
+  background: rgba(255, 107, 91, 0.12);
+}
+
+.form-intro-mark {
+  color: #fff;
+  background: #ff6b5b;
+  box-shadow: 0 5px 13px rgba(20, 18, 61, 0.16), inset 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.primary-button {
+  color: #fff;
+  background: #ff6b5b;
+  box-shadow: 0 7px 17px rgba(20, 18, 61, 0.18), inset 0 1px rgba(255, 255, 255, 0.28);
+}
+
+.primary-button:hover:not(:disabled) {
+  box-shadow: 0 9px 20px rgba(20, 18, 61, 0.22), inset 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.primary-button:active:not(:disabled) {
+  box-shadow: inset 2px 2px 5px rgba(20, 18, 61, 0.2), inset -1px -1px 3px rgba(255, 255, 255, 0.18);
+}
+
+.pagination-button:hover:not(:disabled) {
+  color: #14123d;
+  background: #fff;
+}
+
+.error-message {
+  border-color: rgba(255, 107, 91, 0.28);
+  color: #14123d;
+  background: rgba(255, 107, 91, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(20, 18, 61, 0.26);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 18, 61, 0.48);
 }
