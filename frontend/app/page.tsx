@@ -193,19 +193,38 @@ export default function Home() {
       <header className="app-header">
         <div className="app-header-inner mx-auto flex max-w-7xl flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="brand-lockup">
-            <div className="brand-mark" aria-hidden="true">CS</div>
+            <div className="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none">
+                <path d="M12 32.5V27M19.5 32.5V21M27 32.5V24" stroke="url(#brand-bars)" strokeWidth="3.5" strokeLinecap="round" />
+                <path d="M12 19.5L19.5 14.5L26.5 18L36 10.5" stroke="#FFF4D8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="36" cy="10.5" r="3" fill="#F6BD55" stroke="#FFF4D8" strokeWidth="1.5" />
+                <defs>
+                  <linearGradient id="brand-bars" x1="12" y1="21" x2="27" y2="33" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#FFE5A4" />
+                    <stop offset="1" stopColor="#E99832" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
             <div>
+              <p className="brand-eyebrow">RETENTION INTELLIGENCE</p>
               <h1 className="brand-title">ChurnSense</h1>
               <p className="brand-subtitle">Customer intelligence</p>
             </div>
           </div>
-          <div className="connection-pill">
+          <div className="connection-pill" aria-live="polite">
             <span className={`connection-indicator ${health?.status === "healthy" && health.model_loaded ? "is-connected" : ""}`} />
-            {health?.status === "healthy" && health.model_loaded
-              ? "Backend connected"
-              : connectionError
-                ? "Connection issue"
-                : "Checking backend"}
+            <span className="connection-copy">
+              <span className="connection-kicker">SYSTEM STATUS</span>
+              <span className="connection-text">
+                {health?.status === "healthy" && health.model_loaded
+                  ? "Backend connected"
+                  : connectionError
+                    ? "Connection issue"
+                    : "Checking backend"}
+              </span>
+            </span>
+            <span className="connection-chevron" aria-hidden="true">↗</span>
           </div>
         </div>
       </header>
@@ -233,11 +252,28 @@ export default function Home() {
         {view === "overview" && (
           <section className="page-section space-y-6">
             <div className="page-heading">
-              <h2 className="text-lg font-semibold">Overview</h2>
-              <p className="mt-1 text-sm text-slate-500">Current metrics calculated by the backend from its customer dataset.</p>
+              <div>
+                <p className="page-eyebrow"><span /> CUSTOMER INTELLIGENCE</p>
+                <h2 className="text-lg font-semibold">Customer health, at a glance</h2>
+                <p className="mt-1 text-sm text-slate-500">A considered view of retention, customer value, and the accounts that need attention.</p>
+              </div>
+              <div className="snapshot-badge">
+                <span className="snapshot-orbit" aria-hidden="true"><i /></span>
+                <span><small>YOUR WORKSPACE</small><strong>Portfolio overview</strong></span>
+              </div>
             </div>
             {overviewError && <p role="alert" className="error-message">{overviewError}</p>}
-            {overviewLoading && <p className="text-sm text-slate-500">Loading backend data…</p>}
+            {overviewLoading && (
+              <div className="metric-grid" aria-label="Loading customer metrics">
+                {["01", "02", "03", "04"].map((item) => (
+                  <div key={item} className="metric-card metric-skeleton" aria-hidden="true">
+                    <span className="skeleton-line skeleton-label" />
+                    <span className="skeleton-line skeleton-value" />
+                    <span className="skeleton-line skeleton-caption" />
+                  </div>
+                ))}
+              </div>
+            )}
             {summary && (
               <div className="metric-grid">
                 {[
@@ -245,18 +281,26 @@ export default function Home() {
                   ["Historical churn rate", `${summary.overallChurnRate.value}%`],
                   ["Average estimated LTV", money(summary.averageLtv.value)],
                   ["Annualized charges in high-risk accounts", money(summary.revenueAtRisk.value)],
-                ].map(([label, value]) => (
-                  <article key={label} className="metric-card">
-                    <p className="metric-label">{label}</p>
+                ].map(([label, value], index) => (
+                  <article key={label} className={`metric-card metric-card-${index + 1}`}>
+                    <div className="metric-card-topline">
+                      <span className="metric-label">{label}</span>
+                      <span className="metric-index">{String(index + 1).padStart(2, "0")}</span>
+                    </div>
                     <p className="metric-value">{value}</p>
+                    <p className="metric-context">{["CUSTOMER BASE", "HISTORICAL PERFORMANCE", "CUSTOMER VALUE", "RETENTION OPPORTUNITY"][index]}</p>
                   </article>
                 ))}
               </div>
             )}
             <section className="panel">
               <div className="panel-heading">
-                <h3 className="font-semibold">Highest churn probability</h3>
-                <p className="mt-1 text-sm text-slate-500">Top high-risk records returned by the customer API.</p>
+                <div>
+                  <p className="panel-eyebrow">RETENTION WATCH</p>
+                  <h3 className="font-semibold">Highest churn probability</h3>
+                  <p className="mt-1 text-sm text-slate-500">Top high-risk records returned by the customer API.</p>
+                </div>
+                <span className="panel-mark" aria-hidden="true">↗</span>
               </div>
               {overviewLoading ? <p className="p-5 text-sm text-slate-500">Loading customers…</p> : <CustomerTable customers={highRiskCustomers} />}
             </section>
@@ -266,8 +310,11 @@ export default function Home() {
         {view === "customers" && (
           <section className="page-section space-y-5">
             <div className="page-heading">
-              <h2 className="text-lg font-semibold">Customers</h2>
-              <p className="mt-1 text-sm text-slate-500">Search customer IDs and filter the live backend results.</p>
+              <div>
+                <p className="page-eyebrow"><span /> CUSTOMER DIRECTORY</p>
+                <h2 className="text-lg font-semibold">Your customer portfolio</h2>
+                <p className="mt-1 text-sm text-slate-500">Find an account, explore risk, and see estimated lifetime value.</p>
+              </div>
             </div>
             <div className="filter-panel sm:flex-row">
               <label className="flex-1">
@@ -359,10 +406,17 @@ export default function Home() {
         {view === "prediction" && (
           <section className="page-section mx-auto max-w-2xl space-y-5">
             <div className="page-heading">
-              <h2 className="text-lg font-semibold">Predict churn</h2>
-              <p className="mt-1 text-sm text-slate-500">Enter customer details to request a prediction from the backend model.</p>
+              <div>
+                <p className="page-eyebrow"><span /> PREDICTIVE INSIGHTS</p>
+                <h2 className="text-lg font-semibold">Understand a customer’s risk</h2>
+                <p className="mt-1 text-sm text-slate-500">A few account details are all it takes to uncover a clearer next step.</p>
+              </div>
             </div>
             <form onSubmit={runPrediction} className="form-panel space-y-5">
+              <div className="form-intro">
+                <span className="form-intro-mark" aria-hidden="true">CS</span>
+                <span><strong>Customer profile</strong><small>Tell us a little about this account.</small></span>
+              </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="field-label">
                   Tenure (months)

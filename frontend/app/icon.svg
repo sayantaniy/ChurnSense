@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="tile" x1="8" y1="5" x2="57" y2="62" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#29364D"/>
+      <stop offset="1" stop-color="#111A2B"/>
+    </linearGradient>
+    <linearGradient id="bars" x1="19" y1="28" x2="40" y2="47" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE7B3"/>
+      <stop offset="1" stop-color="#E99A35"/>
+    </linearGradient>
+    <linearGradient id="trend" x1="18" y1="19" x2="48" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1D1"/>
+      <stop offset="1" stop-color="#F3B94F"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="19" fill="url(#tile)"/>
+  <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="18.25" stroke="#F6D28E" stroke-opacity=".44" stroke-width="1.5"/>
+  <path d="M19 45V37M29 45V30M39 45V34" stroke="url(#bars)" stroke-linecap="round" stroke-width="4"/>
+  <path d="m18.5 27 10-7 9 4 11-10" stroke="url(#trend)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+  <circle cx="48.5" cy="14" r="4" fill="#F6BD55" stroke="#FFF1D1" stroke-width="1.5"/>
+</svg>

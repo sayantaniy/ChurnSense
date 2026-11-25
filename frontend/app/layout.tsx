@@ -4,6 +4,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "ChurnSense — Customer Churn",
   description: "Backend-powered customer churn and lifetime value insights.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
