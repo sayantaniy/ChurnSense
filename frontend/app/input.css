@@ -286,10 +286,10 @@
 
 .page-heading h2 {
   color: var(--ink);
-  font-family: var(--font-instrument-serif), Georgia, serif;
-  font-size: clamp(24px, 2.8vw, 34px);
-  font-weight: 400;
-  letter-spacing: -0.035em;
+  font-family: var(--font-work-sans), sans-serif;
+  font-size: clamp(28px, 3.2vw, 38px);
+  font-weight: 600;
+  letter-spacing: -0.045em;
   line-height: 1.2;
 }
 
@@ -815,6 +815,9 @@
 }
 
 @media (max-width: 639px) {
+  .page-heading h2 {
+    font-family: var(--font-instrument-sans), sans-serif;
+  }
   .app-header-inner {
     flex-direction: row;
     align-items: center;
@@ -863,7 +866,7 @@
   .main-nav { width: 100%; }
   .nav-tab { flex: 1 0 auto; padding: 9px 10px; font-size: 11px; }
   .page-heading { align-items: flex-start; margin-bottom: 19px; }
-  .page-heading h2 { font-size: 25px; }
+  .page-heading h2 { font-size: 27px; }
   .page-heading p { max-width: 100%; font-size: 11px; }
   .snapshot-badge { display: none; }
   .metric-grid { gap: 11px; }
