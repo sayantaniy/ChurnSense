@@ -1,9 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&display=swap');
 @import "tailwindcss";
 
 @layer theme {
   :root {
-    --font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-sans: var(--font-instrument-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 }
 
@@ -15,7 +14,7 @@
     min-height: 100%;
     background: #edf0f7;
     color: #172238;
-    font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-instrument-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   button, input, select {
     font: inherit;
@@ -127,7 +126,7 @@
 .brand-title {
   color: #fff;
   font-size: 20px;
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: var(--font-instrument-sans), sans-serif;
   font-weight: 700;
   letter-spacing: -0.055em;
   line-height: 1.15;
@@ -287,7 +286,7 @@
 
 .page-heading h2 {
   color: var(--ink);
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: var(--font-instrument-serif), Georgia, serif;
   font-size: clamp(24px, 2.8vw, 34px);
   font-weight: 400;
   letter-spacing: -0.035em;
@@ -461,7 +460,7 @@
   margin-top: auto;
   padding-top: 15px;
   color: #1a2540;
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: var(--font-instrument-sans), sans-serif;
   font-size: clamp(23px, 2.25vw, 30px);
   font-weight: 700;
   letter-spacing: -0.06em;
@@ -523,7 +522,7 @@
 
 .panel-heading h3 {
   color: #202b43;
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: var(--font-instrument-sans), sans-serif;
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.035em;
@@ -690,7 +689,7 @@
 
 .form-intro strong {
   color: #303b57;
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: var(--font-instrument-sans), sans-serif;
   font-size: 13px;
   font-weight: 700;
 }
